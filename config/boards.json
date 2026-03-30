@@ -1,0 +1,156 @@
+{
+  "boards": [
+    {
+      "id": "general",
+      "name": "综合讨论",
+      "description": "校园生活、学习交流、日常闲聊",
+      "icon": "💬",
+      "parentId": null,
+      "order": 1,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "autoArchive": 60,
+        "maxPostLength": 5000,
+        "allowImages": true,
+        "allowLinks": true
+      },
+      "moderatorAgents": ["moderator-general"],
+      "rules": [
+        "文明发言，禁止人身攻击",
+        "禁止发布广告和垃圾信息",
+        "遵守法律法规"
+      ],
+      "tags": ["日常", "求助", "分享", "讨论"]
+    },
+    {
+      "id": "academic",
+      "name": "学术交流",
+      "description": "课程讨论、学习资料、考试信息",
+      "icon": "📚",
+      "parentId": null,
+      "order": 2,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "autoArchive": 180,
+        "maxPostLength": 10000,
+        "allowImages": true,
+        "allowLinks": true,
+        "allowFiles": true
+      },
+      "moderatorAgents": ["moderator-academic"],
+      "rules": [
+        "尊重知识产权，禁止盗版",
+        "学术诚信，禁止作弊",
+        "互帮互助，共同进步"
+      ],
+      "tags": ["课程", "资料", "考试", "论文", "科研"]
+    },
+    {
+      "id": "tech",
+      "name": "技术专区",
+      "description": "编程开发、硬件数码、AI 技术",
+      "icon": "💻",
+      "parentId": null,
+      "order": 3,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "autoArchive": 90,
+        "maxPostLength": 15000,
+        "allowImages": true,
+        "allowLinks": true,
+        "allowCodeBlocks": true
+      },
+      "moderatorAgents": ["moderator-tech"],
+      "rules": [
+        "代码请格式化",
+        "提问前先搜索",
+        "分享请注明来源"
+      ],
+      "tags": ["代码", "求助", "分享", "项目", "AI"]
+    },
+    {
+      "id": "market",
+      "name": "二手市场",
+      "description": "闲置物品交易、租房信息",
+      "icon": "🏪",
+      "parentId": null,
+      "order": 4,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": true,
+        "autoArchive": 7,
+        "maxPostLength": 2000,
+        "allowImages": true,
+        "allowLinks": false,
+        "requireRealName": true
+      },
+      "moderatorAgents": ["moderator-market"],
+      "rules": [
+        "实名认证后方可发布",
+        "禁止虚假宣传",
+        "交易风险自负",
+        "禁止发布违禁物品"
+      ],
+      "tags": ["出售", "求购", "租房", "拼单"]
+    },
+    {
+      "id": "activities",
+      "name": "活动公告",
+      "description": "社团活动、讲座信息、校园通知",
+      "icon": "📢",
+      "parentId": null,
+      "order": 5,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": true,
+        "autoArchive": 30,
+        "maxPostLength": 3000,
+        "allowImages": true,
+        "allowLinks": true,
+        "allowSticky": true
+      },
+      "moderatorAgents": ["moderator-activities", "admin"],
+      "rules": [
+        "活动需提前报备",
+        "禁止虚假宣传",
+        "官方通知优先置顶"
+      ],
+      "tags": ["社团", "讲座", "比赛", "志愿", "官方"]
+    },
+    {
+      "id": "entertainment",
+      "name": "娱乐休闲",
+      "description": "游戏、影视、音乐、体育",
+      "icon": "🎮",
+      "parentId": null,
+      "order": 6,
+      "settings": {
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "autoArchive": 30,
+        "maxPostLength": 5000,
+        "allowImages": true,
+        "allowLinks": true
+      },
+      "moderatorAgents": ["moderator-entertainment"],
+      "rules": [
+        "理性讨论，禁止引战",
+        "禁止剧透不标注",
+        "尊重不同喜好"
+      ],
+      "tags": ["游戏", "影视", "音乐", "体育", "动漫"]
+    }
+  ],
+  "globalSettings": {
+    "defaultLanguage": "zh-CN",
+    "timezone": "Asia/Shanghai",
+    "newUserPostLimit": 5,
+    "newUserReplyLimit": 10,
+    "trustedUserThreshold": 100,
+    "spamCheckEnabled": true,
+    "sensitiveWordFilter": true
+  }
+}

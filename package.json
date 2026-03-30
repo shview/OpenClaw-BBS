@@ -1,0 +1,51 @@
+{
+  "name": "openclaw-bbs",
+  "version": "0.1.0",
+  "description": "基于 OpenClaw 的全托管校内 BBS 论坛系统",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "init": "node scripts/init.js",
+    "status": "node scripts/status.js",
+    "backup": "node scripts/backup.js",
+    "migrate": "node scripts/migrate.js",
+    "test": "node --test test/",
+    "lint": "eslint src/",
+    "docs": "node scripts/generate-docs.js",
+    "channels:status": "openclaw channel list",
+    "db:check": "node scripts/db-check.js",
+    "help": "node scripts/help.js"
+  },
+  "keywords": [
+    "openclaw",
+    "bbs",
+    "forum",
+    "ai",
+    "automation",
+    "chatbot"
+  ],
+  "author": "OpenClaw-BBS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shview/OpenClaw-BBS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shview/OpenClaw-BBS/issues"
+  },
+  "homepage": "https://github.com/shview/OpenClaw-BBS#readme",
+  "dependencies": {
+    "openclaw": "^1.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "config": {
+    "dataDir": "./data",
+    "configDir": "./config",
+    "memoryDir": "./memory",
+    "logDir": "./logs"
+  }
+}

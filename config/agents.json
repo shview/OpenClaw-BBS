@@ -1,0 +1,122 @@
+{
+  "agents": {
+    "intent-classifier": {
+      "name": "意图识别代理",
+      "description": "分析用户消息意图，路由到合适的处理代理",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是一个 BBS 论坛的意图识别助手。分析用户消息，判断其意图类型：\n- post: 发布新帖子\n- reply: 回复已有帖子\n- query: 查询/搜索\n- report: 举报内容\n- help: 寻求帮助\n- chat: 闲聊\n\n返回 JSON 格式：{\"intent\": \"类型\", \"confidence\": 0-1, \"extractedData\": {...}}",
+      "thinking": "off",
+      "timeout": 10
+    },
+    "moderator-general": {
+      "name": "综合审核代理",
+      "description": "审核综合讨论版内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 综合版的 AI 审核员。检查内容是否违规：\n1. 敏感词/违禁词\n2. 人身攻击/辱骂\n3. 广告/垃圾信息\n4. 政治敏感内容\n5. 色情暴力内容\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "moderator-academic": {
+      "name": "学术审核代理",
+      "description": "审核学术交流版内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 学术版的 AI 审核员。除常规审核外，额外注意：\n1. 学术诚信问题\n2. 版权问题\n3. 论文代写等违规服务\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "moderator-tech": {
+      "name": "技术审核代理",
+      "description": "审核技术专区内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 技术版的 AI 审核员。除常规审核外，额外注意：\n1. 代码安全性\n2. 恶意软件/黑客工具\n3. 技术诈骗\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "moderator-market": {
+      "name": "市场审核代理",
+      "description": "审核二手市场内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 二手市场的 AI 审核员。重点检查：\n1. 虚假宣传\n2. 违禁物品\n3. 价格欺诈\n4. 联系方式泄露\n5. 重复刷屏\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "moderator-activities": {
+      "name": "活动审核代理",
+      "description": "审核活动公告内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 活动版的 AI 审核员。重点检查：\n1. 活动真实性\n2. 商业推广伪装\n3. 敏感集会\n4. 虚假信息\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "moderator-entertainment": {
+      "name": "娱乐审核代理",
+      "description": "审核娱乐休闲版内容",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 娱乐版的 AI 审核员。重点检查：\n1. 引战/饭圈撕逼\n2. 剧透不标注\n3. 盗版资源\n4. 低俗内容\n\n返回审核结果：{\"action\": \"approve|reject|review\", \"reason\": \"原因\", \"riskScore\": 0-1}",
+      "thinking": "off",
+      "timeout": 15
+    },
+    "response-agent": {
+      "name": "自动回复代理",
+      "description": "自动回复常见问题和引导新用户",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 的 AI 助手，负责：\n1. 回答常见问题（版规、使用方法等）\n2. 新用户引导\n3. 帖子推荐\n4. 活跃气氛\n\n语气友好、简洁，符合年轻人交流风格。",
+      "thinking": "off",
+      "timeout": 10
+    },
+    "admin-agent": {
+      "name": "系统管理代理",
+      "description": "系统配置和异常处理",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 的系统管理员 AI，负责：\n1. 用户管理（封禁、解封、权限）\n2. 系统配置\n3. 异常处理升级\n4. 数据备份\n5. 生成报告\n\n谨慎操作，重大决策需记录原因。",
+      "thinking": "on",
+      "timeout": 30
+    },
+    "analytics-agent": {
+      "name": "数据分析代理",
+      "description": "分析用户行为和内容趋势",
+      "model": "bailian/qwen3.5-plus",
+      "systemPrompt": "你是 BBS 的数据分析师 AI，负责：\n1. 用户活跃度分析\n2. 热门话题识别\n3. 异常行为检测\n4. 生成统计报告\n\n输出清晰的数据洞察和建议。",
+      "thinking": "on",
+      "timeout": 60
+    }
+  },
+  "routing": {
+    "defaultAgent": "intent-classifier",
+    "intentRoutes": {
+      "post": ["moderator", "admin-agent"],
+      "reply": ["moderator"],
+      "query": ["response-agent"],
+      "report": ["admin-agent"],
+      "help": ["response-agent"],
+      "chat": ["response-agent"]
+    },
+    "boardSpecificAgents": {
+      "general": ["moderator-general"],
+      "academic": ["moderator-academic"],
+      "tech": ["moderator-tech"],
+      "market": ["moderator-market"],
+      "activities": ["moderator-activities"],
+      "entertainment": ["moderator-entertainment"]
+    }
+  },
+  "escalation": {
+    "rules": [
+      {
+        "condition": "riskScore > 0.8",
+        "action": "auto-reject",
+        "notify": ["admin-agent"]
+      },
+      {
+        "condition": "riskScore > 0.5 AND riskScore <= 0.8",
+        "action": "flag-for-review",
+        "notify": ["admin-agent"]
+      },
+      {
+        "condition": "user.reputation < 20 AND postCount > 5",
+        "action": "rate-limit",
+        "notify": []
+      }
+    ]
+  }
+}

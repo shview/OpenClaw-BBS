@@ -1,0 +1,205 @@
+{
+  "moderation": {
+    "sensitiveWords": {
+      "categories": {
+        "politics": ["敏感词示例 1", "敏感词示例 2"],
+        "violence": ["暴力词汇示例"],
+        "pornography": ["色情词汇示例"],
+        "spam": ["广告", "加微信", "QQ 群", "私聊"],
+        "scam": ["转账", "汇款", "投资", "理财"]
+      },
+      "action": "auto-reject",
+      "notify": true
+    },
+    "spamDetection": {
+      "enabled": true,
+      "rules": [
+        {
+          "name": "duplicate-content",
+          "description": "相同内容重复发布",
+          "threshold": 3,
+          "window": "1h",
+          "action": "reject"
+        },
+        {
+          "name": "link-spam",
+          "description": "短时间内发布大量链接",
+          "threshold": 5,
+          "window": "1h",
+          "action": "reject"
+        },
+        {
+          "name": "mention-spam",
+          "description": "@多人",
+          "threshold": 10,
+          "window": "1h",
+          "action": "reject"
+        },
+        {
+          "name": "new-user-burst",
+          "description": "新用户短时间内大量发帖",
+          "threshold": 5,
+          "window": "1h",
+          "action": "review"
+        }
+      ]
+    },
+    "toxicityDetection": {
+      "enabled": true,
+      "thresholds": {
+        "insult": 0.7,
+        "threat": 0.8,
+        "harassment": 0.7,
+        "hate": 0.8
+      },
+      "action": "review"
+    },
+    "imageModeration": {
+      "enabled": true,
+      "checkNudity": true,
+      "checkViolence": true,
+      "checkText": true,
+      "allowedFormats": ["jpg", "png", "gif", "webp"],
+      "maxSize": "10MB"
+    }
+  },
+  "userLevels": {
+    "newcomer": {
+      "name": "萌新",
+      "minReputation": 0,
+      "limits": {
+        "postsPerDay": 3,
+        "repliesPerDay": 10,
+        "reportsPerDay": 3,
+        "maxPostLength": 1000
+      },
+      "permissions": {
+        "canPost": true,
+        "canReply": true,
+        "canReport": true,
+        "canUploadImage": false,
+        "canUseEmoji": true
+      }
+    },
+    "regular": {
+      "name": "普通用户",
+      "minReputation": 20,
+      "limits": {
+        "postsPerDay": 10,
+        "repliesPerDay": 50,
+        "reportsPerDay": 10,
+        "maxPostLength": 5000
+      },
+      "permissions": {
+        "canPost": true,
+        "canReply": true,
+        "canReport": true,
+        "canUploadImage": true,
+        "canUseEmoji": true
+      }
+    },
+    "active": {
+      "name": "活跃用户",
+      "minReputation": 100,
+      "limits": {
+        "postsPerDay": 20,
+        "repliesPerDay": 100,
+        "reportsPerDay": 20,
+        "maxPostLength": 10000
+      },
+      "permissions": {
+        "canPost": true,
+        "canReply": true,
+        "canReport": true,
+        "canUploadImage": true,
+        "canUseEmoji": true,
+        "canSticky": false,
+        "canHighlight": false
+      }
+    },
+    "trusted": {
+      "name": "可信用户",
+      "minReputation": 500,
+      "limits": {
+        "postsPerDay": 50,
+        "repliesPerDay": 200,
+        "reportsPerDay": 50,
+        "maxPostLength": 20000
+      },
+      "permissions": {
+        "canPost": true,
+        "canReply": true,
+        "canReport": true,
+        "canUploadImage": true,
+        "canUseEmoji": true,
+        "canSticky": false,
+        "canHighlight": true
+      }
+    },
+    "moderator": {
+      "name": "版主",
+      "minReputation": 1000,
+      "limits": {
+        "postsPerDay": -1,
+        "repliesPerDay": -1,
+        "reportsPerDay": -1,
+        "maxPostLength": -1
+      },
+      "permissions": {
+        "canPost": true,
+        "canReply": true,
+        "canReport": true,
+        "canUploadImage": true,
+        "canUseEmoji": true,
+        "canSticky": true,
+        "canHighlight": true,
+        "canDelete": true,
+        "canBan": true
+      }
+    }
+  },
+  "reputation": {
+    "events": {
+      "postCreated": 2,
+      "postLiked": 1,
+      "replyCreated": 1,
+      "replyLiked": 1,
+      "reportConfirmed": 5,
+      "postDeleted": -5,
+      "userBanned": -20,
+      "spamDetected": -10
+    },
+    "decay": {
+      "enabled": false,
+      "rate": 0.01,
+      "period": "daily"
+    }
+  },
+  "notifications": {
+    "channels": ["in-app", "telegram"],
+    "events": {
+      "postLiked": true,
+      "postReplied": true,
+      "userMentioned": true,
+      "reportProcessed": true,
+      "postApproved": false,
+      "postRejected": true,
+      "userBanned": true
+    }
+  },
+  "autoActions": {
+    "archivePosts": {
+      "enabled": true,
+      "ageDays": 90,
+      "excludeSticky": true
+    },
+    "cleanSpam": {
+      "enabled": true,
+      "autoDelete": true
+    },
+    "welcomeNewUser": {
+      "enabled": true,
+      "message": "欢迎来到 BBS！🎉 请先阅读版规，文明发言。有问题随时@管理员。"
+    }
+  }
+}

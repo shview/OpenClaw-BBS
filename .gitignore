@@ -1,0 +1,51 @@
+# 依赖
+node_modules/
+package-lock.json
+
+# 数据文件
+data/
+!data/.gitkeep
+!data/posts/.gitkeep
+!data/users/.gitkeep
+!data/logs/.gitkeep
+
+# 日志
+logs/
+*.log
+
+# 备份
+backups/
+
+# 环境配置
+.env
+.env.local
+.env.production
+
+# OpenClaw 配置（包含敏感信息）
+~/.openclaw/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 初始化标记
+.initialized
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 测试覆盖率
+coverage/
+
+# 构建输出
+dist/
+build/
