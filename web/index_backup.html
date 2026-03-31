@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenClaw-BBS - 校内论坛</title>
+  <title>OpenClaw-BBS - 鏍″唴璁哄潧</title>
   
-  <!-- 使用国内 CDN: BootCDN (https://www.bootcdn.cn/) -->
+  <!-- 浣跨敤鍥藉唴 CDN: BootCDN (https://www.bootcdn.cn/) -->
   <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
   
@@ -23,7 +23,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
-    /* 顶部导航 */
+    /* 椤堕儴瀵艰埅 */
     .navbar {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -34,7 +34,7 @@
       font-size: 1.5rem;
     }
     
-    /* 版块卡片 */
+    /* 鐗堝潡鍗＄墖 */
     .board-card {
       border: none;
       border-radius: 12px;
@@ -59,7 +59,7 @@
       color: #6c757d;
     }
     
-    /* 帖子列表 */
+    /* 甯栧瓙鍒楄〃 */
     .post-item {
       background: white;
       border-radius: 10px;
@@ -101,7 +101,7 @@
       margin-right: 0.5rem;
     }
     
-    /* 用户信息 */
+    /* 鐢ㄦ埛淇℃伅 */
     .user-avatar {
       width: 40px;
       height: 40px;
@@ -126,7 +126,7 @@
     .level-trusted { background: #cfe2ff; color: #084298; }
     .level-moderator { background: #f8d7da; color: #842029; }
     
-    /* 发帖按钮 */
+    /* 鍙戝笘鎸夐挳 */
     .fab-button {
       position: fixed;
       bottom: 2rem;
@@ -152,7 +152,7 @@
       box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
     }
     
-    /* 统计卡片 */
+    /* 缁熻鍗＄墖 */
     .stat-card {
       background: white;
       border-radius: 10px;
@@ -172,7 +172,7 @@
       color: #6c757d;
     }
     
-    /* 移动端优化 */
+    /* 绉诲姩绔紭鍖?*/
     @media (max-width: 768px) {
       .board-icon {
         font-size: 2rem;
@@ -186,7 +186,7 @@
       }
     }
     
-    /* 加载动画 */
+    /* 鍔犺浇鍔ㄧ敾 */
     .loading-spinner {
       display: flex;
       justify-content: center;
@@ -194,7 +194,7 @@
       padding: 3rem;
     }
     
-    /* 空状态 */
+    /* 绌虹姸鎬?*/
     .empty-state {
       text-align: center;
       padding: 3rem;
@@ -207,7 +207,7 @@
       opacity: 0.5;
     }
     
-    /* 页脚 */
+    /* 椤佃剼 */
     footer {
       background: white;
       padding: 1.5rem;
@@ -219,7 +219,7 @@
   </style>
 </head>
 <body>
-  <!-- 顶部导航 -->
+  <!-- 椤堕儴瀵艰埅 -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -232,240 +232,238 @@
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a class="nav-link active" href="#" onclick="showPage('home')">
-              <i class="bi bi-house"></i> 首页
+              <i class="bi bi-house"></i> 棣栭〉
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="showPage('boards')">
-              <i class="bi bi-grid"></i> 版块
+              <i class="bi bi-grid"></i> 鐗堝潡
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="showPage('trending')">
-              <i class="bi bi-fire"></i> 热门
+              <i class="bi bi-fire"></i> 鐑棬
             </a>
           </li>
         </ul>
         <form class="d-flex me-3" onsubmit="handleSearch(event)">
           <input class="form-control form-control-sm me-2" type="search" 
-                 id="searchInput" placeholder="搜索帖子..." aria-label="搜索">
+                 id="searchInput" placeholder="鎼滅储甯栧瓙..." aria-label="鎼滅储">
           <button class="btn btn-outline-light btn-sm" type="submit">
             <i class="bi bi-search"></i>
           </button>
         </form>
         <div class="d-flex align-items-center">
           <div id="userInfo" class="text-white me-3">
-            <small>未登录</small>
+            <small>鏈櫥褰?/small>
           </div>
           <button class="btn btn-outline-light btn-sm" onclick="showLogin()">
-            <i class="bi bi-person"></i> 登录
+            <i class="bi bi-person"></i> 鐧诲綍
           </button>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- 主内容区 -->
+  <!-- 涓诲唴瀹瑰尯 -->
   <div class="container py-4" id="mainContent">
-    <!-- 首页 -->
+    <!-- 棣栭〉 -->
     <div id="homePage">
-      <!-- 统计卡片 -->
+      <!-- 缁熻鍗＄墖 -->
       <div class="row mb-4">
         <div class="col-6 col-md-3 mb-3">
           <div class="stat-card">
             <div class="stat-number" id="statUsers">0</div>
-            <div class="stat-label">用户</div>
+            <div class="stat-label">鐢ㄦ埛</div>
           </div>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <div class="stat-card">
             <div class="stat-number" id="statPosts">0</div>
-            <div class="stat-label">帖子</div>
+            <div class="stat-label">甯栧瓙</div>
           </div>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <div class="stat-card">
             <div class="stat-number" id="statToday">0</div>
-            <div class="stat-label">今日发帖</div>
+            <div class="stat-label">浠婃棩鍙戝笘</div>
           </div>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <div class="stat-card">
             <div class="stat-number" id="statOnline">0</div>
-            <div class="stat-label">在线</div>
+            <div class="stat-label">鍦ㄧ嚎</div>
           </div>
         </div>
       </div>
 
-      <!-- 热门版块 -->
+      <!-- 鐑棬鐗堝潡 -->
       <h5 class="mb-3">
-        <i class="bi bi-star-fill text-warning"></i> 热门版块
+        <i class="bi bi-star-fill text-warning"></i> 鐑棬鐗堝潡
       </h5>
       <div class="row mb-4" id="boardsList">
-        <!-- 版块卡片将通过 JS 动态加载 -->
+        <!-- 鐗堝潡鍗＄墖灏嗛€氳繃 JS 鍔ㄦ€佸姞杞?-->
       </div>
 
-      <!-- 最新帖子 -->
+      <!-- 鏈€鏂板笘瀛?-->
       <h5 class="mb-3">
-        <i class="bi bi-clock-history"></i> 最新帖子
-      </h5>
+        <i class="bi bi-clock-history"></i> 鏈€鏂板笘瀛?      </h5>
       <div id="postsList">
-        <!-- 帖子列表将通过 JS 动态加载 -->
+        <!-- 甯栧瓙鍒楄〃灏嗛€氳繃 JS 鍔ㄦ€佸姞杞?-->
       </div>
     </div>
 
-    <!-- 版块页面 -->
+    <!-- 鐗堝潡椤甸潰 -->
     <div id="boardsPage" style="display:none;">
-      <button class="btn btn-link mb-3" onclick="showPage('home')">返回首页</button>
+      <button class="btn btn-link mb-3" onclick="showPage('home')">杩斿洖棣栭〉</button>
       <h4 class="mb-4">
-        <i class="bi bi-grid-3x3-gap"></i> 全部版块
+        <i class="bi bi-grid-3x3-gap"></i> 鍏ㄩ儴鐗堝潡
       </h4>
       <div class="row" id="allBoardsList">
-        <!-- 所有版块 -->
+        <!-- 鎵€鏈夌増鍧?-->
       </div>
     </div>
 
-    <!-- 搜索结果页面 -->
+    <!-- 鎼滅储缁撴灉椤甸潰 -->
     <div id="searchPage" style="display:none;">
       <button class="btn btn-link mb-3" onclick="showPage('home')">
-        <i class="bi bi-arrow-left"></i> 返回
+        <i class="bi bi-arrow-left"></i> 杩斿洖
       </button>
       <h4 class="mb-3">
-        <i class="bi bi-search"></i> 搜索结果
+        <i class="bi bi-search"></i> 鎼滅储缁撴灉
       </h4>
-      <p class="text-muted mb-3">关键词: <strong id="searchKeyword"></strong></p>
+      <p class="text-muted mb-3">鍏抽敭璇? <strong id="searchKeyword"></strong></p>
       <div id="searchResults">
-        <!-- 搜索结果 -->
+        <!-- 鎼滅储缁撴灉 -->
       </div>
     </div>
 
-    <!-- 帖子详情页面 -->
+    <!-- 甯栧瓙璇︽儏椤甸潰 -->
     <div id="postDetailPage" style="display:none;">
       <button class="btn btn-link mb-3" onclick="showPage('home')">
-        <i class="bi bi-arrow-left"></i> 返回
+        <i class="bi bi-arrow-left"></i> 杩斿洖
       </button>
       <div id="postDetailContent">
-        <!-- 帖子详情 -->
+        <!-- 甯栧瓙璇︽儏 -->
       </div>
     </div>
   </div>
 
-  <!-- 发帖按钮 -->
-  <button class="fab-button" onclick="showPostModal()" title="发帖">
+  <!-- 鍙戝笘鎸夐挳 -->
+  <button class="fab-button" onclick="showPostModal()" title="鍙戝笘">
     <i class="bi bi-pencil"></i>
   </button>
 
-  <!-- 发帖模态框 -->
+  <!-- 鍙戝笘妯℃€佹 -->
   <div class="modal fade" id="postModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <i class="bi bi-pencil-square"></i> 发布新帖子
-          </h5>
+            <i class="bi bi-pencil-square"></i> 鍙戝竷鏂板笘瀛?          </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form id="postForm">
             <div class="mb-3">
-              <label class="form-label">选择版块</label>
+              <label class="form-label">閫夋嫨鐗堝潡</label>
               <select class="form-select" id="postBoard" required>
-                <!-- 版块选项 -->
+                <!-- 鐗堝潡閫夐」 -->
               </select>
             </div>
             <div class="mb-3">
-              <label class="form-label">标题</label>
+              <label class="form-label">鏍囬</label>
               <input type="text" class="form-control" id="postTitle" 
-                     maxlength="100" placeholder="请输入帖子标题" required>
+                     maxlength="100" placeholder="璇疯緭鍏ュ笘瀛愭爣棰? required>
             </div>
             <div class="mb-3">
-              <label class="form-label">内容</label>
+              <label class="form-label">鍐呭</label>
               <textarea class="form-control" id="postContent" rows="6" 
-                        maxlength="10000" placeholder="请输入帖子内容..." required></textarea>
+                        maxlength="10000" placeholder="璇疯緭鍏ュ笘瀛愬唴瀹?.." required></textarea>
               <div class="d-flex justify-content-between align-items-center mt-2">
-                <small class="text-muted">支持 Markdown 语法</small>
+                <small class="text-muted">鏀寔 Markdown 璇硶</small>
                 <button type="button" class="btn btn-outline-secondary btn- sm" onclick="document.getElementById('imageInput').click()">
-                  <i class="bi bi-image"></i> 添加图片
+                  <i class="bi bi-image"></i> 娣诲姞鍥剧墖
                 </button>
                 <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageUpload(this)">
               </div>
             </div>
             <div class="mb-3" id="uploadedImages" style="display:none;">
-              <label class="form-label">已上传图片</label>
+              <label class="form-label">宸蹭笂浼犲浘鐗?/label>
               <div class="d-flex flex-wrap gap-2" id="imagePreview"></div>
             </div>
             <div class="mb-3">
-              <label class="form-label">标签</label>
+              <label class="form-label">鏍囩</label>
               <input type="text" class="form-control" id="postTags" 
-                     placeholder="用逗号分隔，如：求助，分享">
+                     placeholder="鐢ㄩ€楀彿鍒嗛殧锛屽锛氭眰鍔╋紝鍒嗕韩">
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">鍙栨秷</button>
           <button type="button" class="btn btn-primary" onclick="submitPost()">
-            <i class="bi bi-send"></i> 发布
+            <i class="bi bi-send"></i> 鍙戝竷
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 登录模态框 -->
+  <!-- 鐧诲綍妯℃€佹 -->
   <div class="modal fade" id="loginModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <i class="bi bi-box-arrow-in-right"></i> 登录
+            <i class="bi bi-box-arrow-in-right"></i> 鐧诲綍
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form id="loginForm">
             <div class="mb-3">
-              <label class="form-label">用户名</label>
+              <label class="form-label">鐢ㄦ埛鍚?/label>
               <input type="text" class="form-control" id="loginUsername" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">或通过渠道登录</label>
+              <label class="form-label">鎴栭€氳繃娓犻亾鐧诲綍</label>
               <div class="d-grid gap-2">
                 <button type="button" class="btn btn-outline-primary">
                   <i class="bi bi-telegram"></i> Telegram
                 </button>
                 <button type="button" class="btn btn-outline-success">
-                  <i class="bi bi-wechat"></i> 微信
+                  <i class="bi bi-wechat"></i> 寰俊
                 </button>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" onclick="doLogin()">登录</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">鍙栨秷</button>
+          <button type="button" class="btn btn-primary" onclick="doLogin()">鐧诲綍</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 页脚 -->
+  <!-- 椤佃剼 -->
   <footer>
     <div class="container">
       <p class="mb-1">
-        <i class="bi bi-chat-square-heart"></i> OpenClaw-BBS 校内论坛
+        <i class="bi bi-chat-square-heart"></i> OpenClaw-BBS 鏍″唴璁哄潧
       </p>
       <p class="mb-0 small">
         Powered by OpenClaw | v0.1.0 | 
-        <a href="#" onclick="showAbout()">关于</a>
+        <a href="#" onclick="showAbout()">鍏充簬</a>
       </p>
     </div>
   </footer>
 
-  <!-- 提示框 -->
+  <!-- 鎻愮ず妗?-->
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="toast" class="toast" role="alert">
       <div class="toast-body">
-        <i class="bi bi-info-circle"></i> <span id="toastMessage">消息</span>
+        <i class="bi bi-info-circle"></i> <span id="toastMessage">娑堟伅</span>
       </div>
     </div>
   </div>
@@ -475,10 +473,10 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.6.2/axios.min.js"></script>
   
   <script>
-    // ==================== 配置 ====================
-    const API_BASE = '/api';  // 后端 API 地址
+    // ==================== 閰嶇疆 ====================
+    const API_BASE = '/api';  // 鍚庣 API 鍦板潃
     
-    // ==================== 数据状态 ====================
+    // ==================== 鏁版嵁鐘舵€?====================
     let currentUser = null;
     let boards = [];
     let posts = [];
@@ -489,34 +487,34 @@
       online: 0
     };
 
-    // ==================== 初始化 ====================
+    // ==================== 鍒濆鍖?====================
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
       checkLogin();
     });
 
-    // ==================== 数据加载 ====================
+    // ==================== 鏁版嵁鍔犺浇 ====================
     async function loadData() {
       try {
-        // 加载版块配置（本地）
+        // 鍔犺浇鐗堝潡閰嶇疆锛堟湰鍦帮級
         const boardsRes = await fetch('config/boards.json');
         boards = await boardsRes.json();
         renderBoards();
         renderAllBoards();
         populateBoardSelect();
 
-        // 通过 API 加载帖子
+        // 閫氳繃 API 鍔犺浇甯栧瓙
         await loadPosts();
 
-        // 通过 API 加载统计数据
+        // 閫氳繃 API 鍔犺浇缁熻鏁版嵁
         await loadStats();
       } catch (error) {
-        console.error('加载数据失败:', error);
-        showToast('加载数据失败，请刷新页面重试');
+        console.error('鍔犺浇鏁版嵁澶辫触:', error);
+        showToast('鍔犺浇鏁版嵁澶辫触锛岃鍒锋柊椤甸潰閲嶈瘯');
       }
     }
 
-    // 加载统计数据
+    // 鍔犺浇缁熻鏁版嵁
     async function loadStats() {
       try {
         const response = await fetch('/api/stats');
@@ -526,15 +524,14 @@
           updateStats();
         }
       } catch (error) {
-        console.error('加载统计失败:', error);
+        console.error('鍔犺浇缁熻澶辫触:', error);
       }
     }
 
-    // ==================== 渲染函数 ====================
+    // ==================== 娓叉煋鍑芥暟 ====================
     function renderBoards() {
       const container = document.getElementById('boardsList');
-      const hotBoards = boards.boards.slice(0, 4); // 显示前 4 个热门版块
-      
+      const hotBoards = boards.boards.slice(0, 4); // 鏄剧ず鍓?4 涓儹闂ㄧ増鍧?      
       container.innerHTML = hotBoards.map(board => `
         <div class="col-6 col-md-3 mb-3">
           <div class="board-card p-3" onclick="openBoard('${board.id}')">
@@ -570,9 +567,9 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <small class="text-muted">
-                <i class="bi bi-file-text"></i> 0 帖子
+                <i class="bi bi-file-text"></i> 0 甯栧瓙
               </small>
-              <span class="badge bg-primary">进入版块</span>
+              <span class="badge bg-primary">杩涘叆鐗堝潡</span>
             </div>
           </div>
         </div>
@@ -586,7 +583,7 @@
         container.innerHTML = `
           <div class="empty-state">
             <i class="bi bi-inbox"></i>
-            <p>暂无帖子，快来发布第一个帖子吧！</p>
+            <p>鏆傛棤甯栧瓙锛屽揩鏉ュ彂甯冪涓€涓笘瀛愬惂锛?/p>
           </div>
         `;
         return;
@@ -608,14 +605,14 @@
                 ${escapeHtml(post.content.slice(0, 100))}${post.content.length > 100 ? '...' : ''}
               </p>
               <div class="post-meta">
-                <i class="bi bi-person"></i> 用户${post.authorId.slice(-4)} &nbsp;
+                <i class="bi bi-person"></i> 鐢ㄦ埛${post.authorId.slice(-4)} &nbsp;
                 <i class="bi bi-clock"></i> ${formatTime(post.createdAt)} &nbsp;
-                <i class="bi bi-chat"></i> ${post.replyCount || 0} 回复
+                <i class="bi bi-chat"></i> ${post.replyCount || 0} 鍥炲
               </div>
             </div>
             <div class="ms-3 text-center">
               <div class="text-primary fw-bold">${post.likeCount || 0}</div>
-              <small class="text-muted">点赞</small>
+              <small class="text-muted">鐐硅禐</small>
             </div>
           </div>
         </div>
@@ -636,39 +633,37 @@
       `).join('');
     }
 
-    // ==================== 页面导航 ====================
+    // ==================== 椤甸潰瀵艰埅 ====================
     function showPage(page) {
       document.getElementById('homePage').style.display = 'none';
       document.getElementById('boardsPage').style.display = 'none';
       document.getElementById('postDetailPage').style.display = 'none';
-      document.getElementById('searchPage').style.display = 'none';
 
       if (page === 'home') {
         document.getElementById('homePage').style.display = 'block';
       } else if (page === 'boards') {
         document.getElementById('boardsPage').style.display = 'block';
-      } else if (page === 'search') {
-        document.getElementById('searchPage').style.display = 'block';
       } else if (page === 'trending') {
-        showToast('热门功能开发中...');
+        // TODO: 鐑棬椤甸潰
+        showToast('鍔熻兘寮€鍙戜腑...');
       }
     }
 
     function openBoard(boardId) {
-      showToast(`进入版块：${boardId} (功能开发中)`);
+      showToast(`杩涘叆鐗堝潡锛?{boardId} (鍔熻兘寮€鍙戜腑)`);
     }
 
     function openPost(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post) {
-        showToast('帖子不存在');
+        showToast('甯栧瓙涓嶅瓨鍦?);
         return;
       }
 
       document.getElementById('homePage').style.display = 'none';
       document.getElementById('postDetailPage').style.display = 'block';
 
-      // 获取回复列表
+      // 鑾峰彇鍥炲鍒楄〃
       fetch(`/api/posts/${postId}/replies`)
         .then(res => res.json())
         .then(result => {
@@ -697,19 +692,19 @@
             <div class="ms-4">${escapeHtml(reply.content)}</div>
           </div>
         `).join('')
-        : '<p class="text-muted text-center py-3">暂无回复，快来抢沙发~</p>';
+        : '<p class="text-muted text-center py-3">鏆傛棤鍥炲锛屽揩鏉ユ姠娌欏彂~</p>';
 
       container.innerHTML = `
         <div class="post-item">
           <button class="btn btn-link text-decoration-none mb-3 ps-0" onclick="showPage('home')">
-            <i class="bi bi-arrow-left"></i> 返回
+            <i class="bi bi-arrow-left"></i> 杩斿洖
           </button>
           <div class="d-flex align-items-center mb-3">
             <div class="user-avatar me-3">
               ${post.authorName ? post.authorName[0].toUpperCase() : 'A'}
             </div>
             <div>
-              <div class="fw-bold">${escapeHtml(post.authorName || '匿名用户')}</div>
+              <div class="fw-bold">${escapeHtml(post.authorName || '鍖垮悕鐢ㄦ埛')}</div>
               <small class="text-muted">${formatTime(post.createdAt)}</small>
             </div>
             <span class="badge bg-${getStatusBadge(post.status)} ms-auto">${getStatusText(post.status)}</span>
@@ -728,14 +723,14 @@
               <i class="bi bi-hand-thumbs-up"></i> ${post.likeCount || 0}
             </button>
             <span class="text-muted">
-              <i class="bi bi-eye"></i> ${post.viewCount || 0} 浏览
+              <i class="bi bi-eye"></i> ${post.viewCount || 0} 娴忚
             </span>
           </div>
         </div>
         
         <div class="card mt-3">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-chat-dots"></i> 回复 (${replies.length})</span>
+            <span><i class="bi bi-chat-dots"></i> 鍥炲 (${replies.length})</span>
           </div>
           <div class="card-body" style="max-height:400px; overflow-y:auto;">
             ${repliesHtml}
@@ -743,18 +738,17 @@
           <div class="card-footer">
             <div class="input-group">
               <input type="text" class="form-control" id="replyContent" 
-                     placeholder="写下你的回复..." maxlength="500">
+                     placeholder="鍐欎笅浣犵殑鍥炲..." maxlength="500">
               <button class="btn btn-primary" onclick="submitReply('${post.id}')">
-                <i class="bi bi-send"></i> 发送
-              </button>
+                <i class="bi bi-send"></i> 鍙戦€?              </button>
             </div>
-            <small class="text-muted">回复支持 Markdown 语法</small>
+            <small class="text-muted">鍥炲鏀寔 Markdown 璇硶</small>
           </div>
         </div>
       `;
     }
 
-    // ==================== 发帖功能 ====================
+    // ==================== 鍙戝笘鍔熻兘 ====================
     function showPostModal() {
       if (!currentUser) {
         showLogin();
@@ -771,33 +765,33 @@
       const tagsInput = document.getElementById('postTags').value.trim();
 
       if (!title || !content) {
-        showToast('请填写标题和内容');
+        showToast('璇峰～鍐欐爣棰樺拰鍐呭');
         return;
       }
 
       if (title.length < 3) {
-        showToast('标题至少需要3个字符');
+        showToast('鏍囬鑷冲皯闇€瑕?涓瓧绗?);
         return;
       }
 
       if (content.length < 10) {
-        showToast('内容至少需要10个字符');
+        showToast('鍐呭鑷冲皯闇€瑕?0涓瓧绗?);
         return;
       }
 
-      const tags = tagsInput ? tagsInput.split(/[,，]/).map(t => t.trim()).filter(t => t) : [];
+      const tags = tagsInput ? tagsInput.split(/[,锛宂/).map(t => t.trim()).filter(t => t) : [];
 
       const newPost = {
         boardId,
         authorId: currentUser ? currentUser.id : 'anonymous',
-        authorName: currentUser ? currentUser.username : '匿名用户',
+        authorName: currentUser ? currentUser.username : '鍖垮悕鐢ㄦ埛',
         title,
         content,
         tags
       };
 
       try {
-        // 调用后端 API 创建帖子
+        // 璋冪敤鍚庣 API 鍒涘缓甯栧瓙
         const response = await fetch('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -807,27 +801,27 @@
         const result = await response.json();
 
         if (result.success) {
-          showToast(result.message || '发帖成功！');
+          showToast(result.message || '鍙戝笘鎴愬姛锛?);
           
-          // 关闭模态框
+          // 鍏抽棴妯℃€佹
           const modal = bootstrap.Modal.getInstance(document.getElementById('postModal'));
           modal.hide();
           
-          // 重置表单
+          // 閲嶇疆琛ㄥ崟
           document.getElementById('postForm').reset();
           
-          // 重新加载帖子列表
+          // 閲嶆柊鍔犺浇甯栧瓙鍒楄〃
           await loadPosts();
         } else {
-          showToast(result.error || '发帖失败');
+          showToast(result.error || '鍙戝笘澶辫触');
         }
       } catch (error) {
-        console.error('发帖失败:', error);
-        showToast('发帖失败，请检查网络连接');
+        console.error('鍙戝笘澶辫触:', error);
+        showToast('鍙戝笘澶辫触锛岃妫€鏌ョ綉缁滆繛鎺?);
       }
     }
 
-    // 加载帖子列表
+    // 鍔犺浇甯栧瓙鍒楄〃
     async function loadPosts() {
       try {
         const response = await fetch('/api/posts');
@@ -837,149 +831,22 @@
           renderPosts();
         }
       } catch (error) {
-        console.error('加载帖子失败:', error);
+        console.error('鍔犺浇甯栧瓙澶辫触:', error);
       }
     }
 
-    // ==================== 搜索功能 ====================
-    async function handleSearch(event) {
-      event.preventDefault();
-      const keyword = document.getElementById('searchInput').value.trim();
-      if (!keyword || keyword.length < 2) { 
-        showToast('请输入至少2个字符'); 
-        return;
-      }
-      
-      try {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(keyword)}`);
-        const result = await response.json();
-        
-        if (result.success) {
-          showSearchResults(keyword, result.data);
-        } else {
-          showToast(result.error || '搜索失败');
-        }
-      } catch (error) {
-        console.error('搜索失败:', error);
-        showToast('搜索失败，请重试');
-      }
-    }
-
-    function showSearchResults(keyword, results) {
-      document.getElementById('homePage').style.display = 'none';
-      document.getElementById('boardsPage').style.display = 'none';
-      document.getElementById('postDetailPage').style.display = 'none';
-      document.getElementById('searchPage').style.display = 'block';
-      
-      document.getElementById('searchKeyword').textContent = keyword;
-      const container = document.getElementById('searchResults');
-      
-      if (results.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="bi bi-search"></i><p>未找到相关帖子</p></div>';
-        return;
-      }
-      
-      container.innerHTML = results.map(post => `
-        <div class="post-item" onclick="openPost('${post.id}')">
-          <h6 class="post-title"><a href="#">${escapeHtml(post.title)}</a></h6>
-          <p class="text-muted small mb-2">${escapeHtml(post.content.slice(0, 80))}...</p>
-          <div class="post-meta">
-            <i class="bi bi-person"></i> ${escapeHtml(post.authorName || '匿名')} &nbsp;
-            <i class="bi bi-clock"></i> ${formatTime(post.createdAt)} &nbsp;
-            <i class="bi bi-chat"></i> ${post.replyCount || 0}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // ==================== 图片上传 ====================
-    let uploadedImageUrls = [];
-
-    async function handleImageUpload(input) {
-      const file = input.files[0];
-      if (!file) return;
-
-      if (file.size > 2 * 1024 * 1024) {
-        showToast('图片不能超过2MB');
-        return;
-      }
-
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (!allowedTypes.includes(file.type)) {
-        showToast('仅支持 JPEG, PNG, GIF, WebP 格式');
-        return;
-      }
-
-      try {
-        const base64 = await fileToBase64(file);
-        const imageData = `data:${file.type};base64,${base64}`;
-
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: imageData })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          uploadedImageUrls.push(result.data.url);
-          renderImagePreview();
-          showToast('图片上传成功');
-        } else {
-          showToast(result.error || '上传失败');
-        }
-      } catch (error) {
-        console.error('图片上传失败:', error);
-        showToast('图片上传失败');
-      }
-
-      input.value = '';
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function renderImagePreview() {
-      const container = document.getElementById('uploadedImages');
-      const preview = document.getElementById('imagePreview');
-      
-      if (uploadedImageUrls.length > 0) {
-        container.style.display = 'block';
-        preview.innerHTML = uploadedImageUrls.map((url, index) => `
-          <div class="position-relative">
-            <img src="${url}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;">
-            <button type="button" class="btn-close position-absolute top-0 end-0" onclick="removeImage(${index})" style="font-size:0.5rem;"></button>
-          </div>
-        `).join('');
-      } else {
-        container.style.display = 'none';
-      }
-    }
-
-    function removeImage(index) {
-      uploadedImageUrls.splice(index, 1);
-      renderImagePreview();
-    }
-
-    // ==================== 回复功能 ====================
+    // ==================== 鍥炲鍔熻兘 ====================
     async function submitReply(postId) {
       const replyInput = document.getElementById('replyContent');
       const content = replyInput.value.trim();
 
       if (!content || content.length < 2) {
-        showToast('回复内容至少2个字符');
+        showToast('鍥炲鍐呭鑷冲皯2涓瓧绗?);
         return;
       }
 
       if (!currentUser) {
-        showToast('请先登录');
+        showToast('璇峰厛鐧诲綍');
         showLogin();
         return;
       }
@@ -998,38 +865,37 @@
         const result = await response.json();
 
         if (result.success) {
-          showToast('回复成功！');
+          showToast('鍥炲鎴愬姛锛?);
           replyInput.value = '';
-          // 刷新帖子详情
+          // 鍒锋柊甯栧瓙璇︽儏
           openPost(postId);
-          // 更新列表
+          // 鏇存柊鍒楄〃
           await loadPosts();
         } else {
-          showToast(result.error || '回复失败');
+          showToast(result.error || '鍥炲澶辫触');
         }
       } catch (error) {
-        console.error('回复失败:', error);
-        showToast('回复失败，请重试');
+        console.error('鍥炲澶辫触:', error);
+        showToast('鍥炲澶辫触锛岃閲嶈瘯');
       }
     }
 
-    // 点赞帖子
+    // 鐐硅禐甯栧瓙
     async function likePost(postId) {
-      showToast('点赞功能开发中');
+      showToast('鐐硅禐鍔熻兘寮€鍙戜腑');
     }
 
-    // 状态徽章
-    function getStatusBadge(status) {
+    // 鐘舵€佸窘绔?    function getStatusBadge(status) {
       const map = { pending: 'warning', visible: 'success', hidden: 'secondary', deleted: 'danger' };
       return map[status] || 'secondary';
     }
 
     function getStatusText(status) {
-      const map = { pending: '待审核', visible: '已发布', hidden: '已隐藏', deleted: '已删除' };
+      const map = { pending: '寰呭鏍?, visible: '宸插彂甯?, hidden: '宸查殣钘?, deleted: '宸插垹闄? };
       return map[status] || status;
     }
 
-    // ==================== 登录功能 ====================
+    // ==================== 鐧诲綍鍔熻兘 ====================
     function checkLogin() {
       const saved = localStorage.getItem('bbs_user');
       if (saved) {
@@ -1046,7 +912,7 @@
     function doLogin() {
       const username = document.getElementById('loginUsername').value.trim();
       if (!username) {
-        showToast('请输入用户名');
+        showToast('璇疯緭鍏ョ敤鎴峰悕');
         return;
       }
 
@@ -1063,7 +929,7 @@
       const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
       modal.hide();
       
-      showToast(`欢迎，${username}！`);
+      showToast(`娆㈣繋锛?{username}锛乣);
     }
 
     function updateUserInfo() {
@@ -1077,11 +943,11 @@
           </small>
         `;
       } else {
-        container.innerHTML = '<small>未登录</small>';
+        container.innerHTML = '<small>鏈櫥褰?/small>';
       }
     }
 
-    // ==================== 工具函数 ====================
+    // ==================== 宸ュ叿鍑芥暟 ====================
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
@@ -1096,10 +962,10 @@
       const hours = Math.floor(diff / 3600000);
       const days = Math.floor(diff / 86400000);
 
-      if (minutes < 1) return '刚刚';
-      if (minutes < 60) return `${minutes}分钟前`;
-      if (hours < 24) return `${hours}小时前`;
-      if (days < 30) return `${days}天前`;
+      if (minutes < 1) return '鍒氬垰';
+      if (minutes < 60) return `${minutes}鍒嗛挓鍓峘;
+      if (hours < 24) return `${hours}灏忔椂鍓峘;
+      if (days < 30) return `${days}澶╁墠`;
       
       return date.toLocaleDateString('zh-CN');
     }
@@ -1113,8 +979,9 @@
     }
 
     function showAbout() {
-      alert('OpenClaw-BBS v0.1.0\n\n基于 OpenClaw 的 AI 托管校内论坛系统\n\n特性:\n• AI 自动审核\n• 多渠道接入\n• 本地部署\n• 完全开源');
+      alert('OpenClaw-BBS v0.1.0\n\n鍩轰簬 OpenClaw 鐨?AI 鎵樼鏍″唴璁哄潧绯荤粺\n\n鐗规€?\n鈥?AI 鑷姩瀹℃牳\n鈥?澶氭笭閬撴帴鍏n鈥?鏈湴閮ㄧ讲\n鈥?瀹屽叏寮€婧?);
     }
   </script>
 </body>
 </html>
+

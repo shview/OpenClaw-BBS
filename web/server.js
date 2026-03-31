@@ -219,6 +219,12 @@ function handleApi(req, res, parsedUrl) {
       new Date(p.createdAt).toDateString() === today
     ).length;
 
+    // 统计回复数
+    let totalReplies = 0;
+    posts.forEach(p => {
+      totalReplies += (p.replies || []).length;
+    });
+
     res.writeHead(200);
     res.end(JSON.stringify({
       success: true,
@@ -226,8 +232,91 @@ function handleApi(req, res, parsedUrl) {
         users: Object.keys(users).length,
         posts: posts.length,
         todayPosts,
-        online: Math.floor(Math.random() * 50) + 10 // 模拟在线人数
+        online: Math.floor(Math.random() * 50) + 10,
+        replies: totalReplies
       }
+    }, null, 2));
+    return;
+  }
+
+  // POST /api/posts/:id/reply - 添加回复
+  const replyMatch = pathname.match(/^\/api\/posts\/([^\/]+)\/reply$/);
+  if (replyMatch && req.method === 'POST') {
+    const postId = replyMatch[1];
+    const postIndex = posts.findIndex(p => p.id === postId);
+
+    if (postIndex === -1) {
+      res.writeHead(404);
+      res.end(JSON.stringify({ success: false, error: '帖子不存在' }));
+      return;
+    }
+
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+
+        if (!data.content || data.content.trim().length < 2) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ success: false, error: '回复内容至少2个字符' }));
+          return;
+        }
+
+        const reply = {
+          id: `reply_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          postId: postId,
+          authorId: data.authorId || 'anonymous',
+          authorName: data.authorName || '匿名用户',
+          content: data.content.trim(),
+          createdAt: new Date().toISOString(),
+          likeCount: 0
+        };
+
+        // 初始化 replies 数组
+        if (!posts[postIndex].replies) {
+          posts[postIndex].replies = [];
+        }
+
+        posts[postIndex].replies.push(reply);
+        posts[postIndex].replyCount = posts[postIndex].replies.length;
+        saveData();
+
+        console.log(`[API] 新回复：${reply.id} -> 帖子 ${postId}`);
+
+        res.writeHead(201);
+        res.end(JSON.stringify({
+          success: true,
+          data: reply,
+          message: '回复成功！'
+        }, null, 2));
+      } catch (error) {
+        res.writeHead(400);
+        res.end(JSON.stringify({
+          success: false,
+          error: `解析失败：${error.message}`
+        }));
+      }
+    });
+    return;
+  }
+
+  // GET /api/posts/:id/replies - 获取帖子回复列表
+  const repliesMatch = pathname.match(/^\/api\/posts\/([^\/]+)\/replies$/);
+  if (repliesMatch && req.method === 'GET') {
+    const postId = repliesMatch[1];
+    const post = posts.find(p => p.id === postId);
+
+    if (!post) {
+      res.writeHead(404);
+      res.end(JSON.stringify({ success: false, error: '帖子不存在' }));
+      return;
+    }
+
+    res.writeHead(200);
+    res.end(JSON.stringify({
+      success: true,
+      data: post.replies || []
     }, null, 2));
     return;
   }
@@ -277,9 +366,128 @@ function handleApi(req, res, parsedUrl) {
     return;
   }
 
+  // GET /api/search - 搜索帖子
+  if (pathname === '/api/search' && req.method === 'GET') {
+    const query = parsedUrl.query || '';
+    const params = new URLSearchParams(query);
+    const keyword = params.get('q') || params.get('keyword') || '';
+
+    if (keyword.length < 2) {
+      res.writeHead(400);
+      res.end(JSON.stringify({ success: false, error: '搜索关键词至少2个字符' }));
+      return;
+    }
+
+    const results = handleSearch(keyword);
+
+    res.writeHead(200);
+    res.end(JSON.stringify({
+      success: true,
+      data: results,
+      total: results.length,
+      keyword: keyword
+    }, null, 2));
+    return;
+  }
+
+  // POST /api/upload - 图片上传（Base64）
+  if (pathname === '/api/upload' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+
+        if (!data.image) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ success: false, error: '缺少图片数据' }));
+          return;
+        }
+
+        // 验证图片格式
+        const base64Data = data.image;
+        const mimeMatch = base64Data.match(/^data:(image\/\w+);base64,/);
+
+        if (!mimeMatch) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ success: false, error: '无效的图片格式' }));
+          return;
+        }
+
+        const mimeType = mimeMatch[1];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!allowedTypes.includes(mimeType)) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ success: false, error: '不支持的图片格式，仅支持 JPEG, PNG, GIF, WebP' }));
+          return;
+        }
+
+        // 检查图片大小（限制 2MB）
+        const sizeInBytes = (base64Data.length * 3) / 4;
+        if (sizeInBytes > 2 * 1024 * 1024) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ success: false, error: '图片大小不能超过 2MB' }));
+          return;
+        }
+
+        // 生成唯一文件名
+        const ext = mimeType.split('/')[1];
+        const filename = `img_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+        // 保存图片（这里保存到 data/uploads 目录）
+        const uploadDir = path.join(CONFIG.dataDir, 'uploads');
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        // 移除 data:image/xxx;base64, 前缀并保存
+        const base64Content = base64Data.replace(/^data:image\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Content, 'base64');
+        const filepath = path.join(uploadDir, filename);
+        fs.writeFileSync(filepath, buffer);
+
+        const imageUrl = `/data/uploads/${filename}`;
+
+        console.log(`[API] 图片上传成功：${filename}`);
+
+        res.writeHead(200);
+        res.end(JSON.stringify({
+          success: true,
+          data: {
+            url: imageUrl,
+            filename: filename,
+            size: buffer.length
+          },
+          message: '图片上传成功'
+        }, null, 2));
+      } catch (error) {
+        res.writeHead(400);
+        res.end(JSON.stringify({
+          success: false,
+          error: `上传失败：${error.message}`
+        }));
+      }
+    });
+    return;
+  }
+
   // 404
   res.writeHead(404);
   res.end(JSON.stringify({ success: false, error: 'API 未找到' }));
+}
+
+// ==================== 搜索功能 ====================
+function handleSearch(query) {
+  const q = query.toLowerCase();
+  const results = posts.filter(post => {
+    return (
+      post.title && post.title.toLowerCase().includes(q) ||
+      post.content && post.content.toLowerCase().includes(q) ||
+      (post.tags && post.tags.some(tag => tag.toLowerCase().includes(q)))
+    );
+  });
+  return results;
 }
 
 // 主请求处理
@@ -295,7 +503,23 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 静态文件路由
+  // 静态文件路由 - 上传的图片
+  if (pathname.startsWith('/data/uploads/')) {
+    const uploadPath = path.join(CONFIG.dataDir, 'uploads', pathname.replace('/data/uploads/', ''));
+    const uploadDirResolved = path.resolve(path.join(CONFIG.dataDir, 'uploads'));
+    const uploadFileResolved = path.resolve(uploadPath);
+    
+    if (!uploadFileResolved.startsWith(uploadDirResolved)) {
+      res.writeHead(403, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end('<h1>403 - 禁止访问</h1>');
+      return;
+    }
+    
+    serveStaticFile(res, uploadPath);
+    return;
+  }
+
+  // 其他静态文件
   let filePath = path.join(CONFIG.webDir, pathname === '/' ? 'index.html' : pathname);
   
   // 安全检查：防止目录遍历攻击
