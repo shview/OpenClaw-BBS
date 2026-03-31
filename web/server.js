@@ -519,6 +519,20 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 静态文件路由 - 配置文件
+  if (pathname.startsWith('/config/')) {
+    const configPath = path.join(CONFIG.configDir, pathname.replace('/config/', ''));
+    serveStaticFile(res, configPath);
+    return;
+  }
+
+  // 静态文件路由 - 数据文件（排除 uploads）
+  if (pathname.startsWith('/data/') && !pathname.startsWith('/data/uploads/')) {
+    const dataPath = path.join(CONFIG.dataDir, pathname.replace('/data/', ''));
+    serveStaticFile(res, dataPath);
+    return;
+  }
+
   // 其他静态文件
   let filePath = path.join(CONFIG.webDir, pathname === '/' ? 'index.html' : pathname);
   
